@@ -1,56 +1,55 @@
+// src/App.jsx
+
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
-import ServerInfo from "./pages/ServerInfo";
 import Events from "./pages/Events";
-import Social from "./pages/Social";
-
+import ServerInfo from "./pages/ServerInfo";
 import Dashboard from "./pages/Dashboard";
-
 import DiscordCallback from "./pages/DiscordCallback";
+import Partner from "./pages/Partner";
+import SocialLinks from "./pages/SocialLinks";
+import AddBot from "./pages/AddBot";
 
-import ProtectedRoute from "./components/ProtectedRoute";
-
-function Layout() {
+function AppContent() {
   const location = useLocation();
 
-  // HIDE NAVBAR DI DASHBOARD
-  const hideNavbar = location.pathname.startsWith("/dashboard");
+  // HIDE NAVBAR ON DASHBOARD
+  const hideNavbar = location.pathname === "/dashboard";
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="bg-black text-white min-h-screen">
       {!hideNavbar && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/server-info" element={<ServerInfo />} />
-
         <Route path="/events" element={<Events />} />
 
-        <Route path="/social" element={<Social />} />
+        <Route path="/server-info" element={<ServerInfo />} />
+
+        <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/auth/discord/callback" element={<DiscordCallback />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/partner" element={<Partner />} />
+
+        <Route path="/social-links" element={<SocialLinks />} />
+
+        <Route path="/add-bot" element={<AddBot />} />
       </Routes>
     </div>
   );
 }
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
-      <Layout />
+      <AppContent />
     </BrowserRouter>
   );
 }
+
+export default App;

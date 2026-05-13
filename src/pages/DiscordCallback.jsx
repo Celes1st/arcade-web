@@ -2,32 +2,61 @@
 
 import { useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
-
 export default function DiscordCallback() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const hash = window.location.hash;
 
     const params = new URLSearchParams(hash.replace("#", ""));
 
-    const token = params.get("access_token");
+    const accessToken = params.get("access_token");
 
-    if (token) {
-      // SAVE TOKEN
-      localStorage.setItem("discord_token", token);
-
-      // GO DASHBOARD
-      navigate("/dashboard");
-    } else {
-      navigate("/");
+    // NO TOKEN
+    if (!accessToken) {
+      window.location.href = "/";
+      return;
     }
-  }, [navigate]);
+
+    // CHECK OWNER ACCESS
+    fetch(`${import.meta.env.VITE_API_URL}/api/check-member`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then(async (res) => {
+        // NOT OWNER
+        if (!res.ok) {
+          localStorage.removeItem("discord_token");
+
+          alert("Owner only access");
+
+          window.location.href = "/";
+
+          return;
+        }
+
+        // SUCCESS
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem("discord_token", accessToken);
+
+          window.location.href = "/dashboard";
+        } else {
+          localStorage.removeItem("discord_token");
+
+          window.location.href = "/";
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("discord_token");
+
+        window.location.href = "/";
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center text-white">
-      Loading...
+      Checking owner access...
     </div>
   );
 }

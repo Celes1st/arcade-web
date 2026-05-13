@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 
-export default function Social() {
+export default function SocialLinks() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Navbar */}
