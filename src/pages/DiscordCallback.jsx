@@ -1,31 +1,33 @@
+// src/pages/DiscordCallback.jsx
+
 import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 export default function DiscordCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const hash = window.location.hash;
 
-    const token = fragment.get("access_token");
+    const params = new URLSearchParams(hash.replace("#", ""));
+
+    const token = params.get("access_token");
 
     if (token) {
-      console.log("TOKEN:", token);
-
+      // SAVE TOKEN
       localStorage.setItem("discord_token", token);
 
-      // DELAY DIKIT
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 500);
+      // GO DASHBOARD
+      navigate("/dashboard");
     } else {
       navigate("/");
     }
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      Logging in...
+    <div className="min-h-screen bg-black flex items-center justify-center text-white">
+      Loading...
     </div>
   );
 }

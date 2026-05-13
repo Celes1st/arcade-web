@@ -25,10 +25,10 @@ export default function Home() {
           </div>
 
           <h1 className="text-6xl md:text-8xl font-black leading-tight">
-            The Undefined
+            Cari server asik?
             <br />
             <span className="bg-gradient-to-r from-lime-400 via-lime-200 to-lime-500 bg-clip-text text-transparent">
-              Server
+              Pilih Arcade dong!
             </span>
           </h1>
 

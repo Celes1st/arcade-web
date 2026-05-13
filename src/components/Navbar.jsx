@@ -1,7 +1,9 @@
 // src/components/Navbar.jsx
 
 import { Link } from "react-router-dom";
+
 import { useEffect, useState } from "react";
+
 import { FaBars, FaTimes, FaDiscord } from "react-icons/fa";
 
 import ServerIcon from "../assets/ARCADE.png";
@@ -36,27 +38,27 @@ export default function Navbar() {
     const token = localStorage.getItem("discord_token");
 
     if (!token) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 0);
+      setLoading(false);
 
       return;
     }
 
-    fetch("http://localhost:3001/api/check-member", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/check-member`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Not member");
+          throw new Error("Unauthorized");
         }
 
         return res.json();
       })
       .then((data) => {
-        setUser(data.user);
+        if (data.user) {
+          setUser(data.user);
+        }
 
         setLoading(false);
       })
@@ -66,6 +68,7 @@ export default function Navbar() {
         setLoading(false);
       });
   }, []);
+
   // LOGOUT
   const logout = () => {
     localStorage.removeItem("discord_token");
@@ -100,9 +103,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT */}
         <div className="hidden md:flex items-center gap-4">
-          {/* JOIN BUTTON */}
+          {/* JOIN */}
           <a
             href="https://discord.gg/4KWauvZeSN"
             target="_blank"
@@ -112,10 +115,9 @@ export default function Navbar() {
             Join Server
           </a>
 
-          {/* USER / LOGIN */}
+          {/* USER */}
           {loading ? null : user ? (
             <div className="relative group">
-              {/* PROFILE BUTTON */}
               <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition">
                 <img
                   src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
@@ -179,17 +181,11 @@ export default function Navbar() {
         {/* MOBILE MENU */}
         {open && (
           <div className="absolute top-20 left-0 w-full rounded-2xl border border-white/10 bg-black/90 backdrop-blur-xl p-6 flex flex-col gap-5 md:hidden">
-            <Link to="/server-info" onClick={() => setOpen(false)}>
-              Server Info
-            </Link>
+            <Link to="/server-info">Server Info</Link>
 
-            <Link to="/events" onClick={() => setOpen(false)}>
-              Events
-            </Link>
+            <Link to="/events">Events</Link>
 
-            <Link to="/social" onClick={() => setOpen(false)}>
-              Social
-            </Link>
+            <Link to="/social">Social</Link>
 
             <a
               href="https://discord.gg/4KWauvZeSN"
@@ -200,7 +196,6 @@ export default function Navbar() {
               Join Server
             </a>
 
-            {/* MOBILE DASHBOARD */}
             {user && (
               <button
                 onClick={() => (window.location.href = "/dashboard")}
@@ -210,7 +205,6 @@ export default function Navbar() {
               </button>
             )}
 
-            {/* MOBILE LOGIN */}
             {!loading && !user && (
               <button
                 onClick={() => setShowWarning(true)}
@@ -228,11 +222,11 @@ export default function Navbar() {
       {showWarning && (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="w-[90%] max-w-md rounded-3xl border border-white/10 bg-[#0f0f0f] p-8 text-center shadow-2xl">
-            {/* SERVER ICON */}
+            {/* ICON */}
             <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-[#b3ff00] shadow-[0_0_30px_rgba(179,255,0,1)]">
               <img
                 src={ServerIcon}
-                alt="Arcade Server"
+                alt="Arcade"
                 className="w-full h-full object-cover"
               />
             </div>

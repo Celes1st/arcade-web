@@ -9,27 +9,49 @@ export default function Dashboard() {
 
   const [user, setUser] = useState(null);
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   // GET USER
   useEffect(() => {
     const token = localStorage.getItem("discord_token");
 
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
 
-    fetch("http://localhost:3001/api/check-member", {
+      navigate("/");
+
+      return;
+    }
+
+    fetch(`${import.meta.env.VITE_API_URL}/api/check-member`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Unauthorized");
+        }
+
+        return res.json();
+      })
       .then((data) => {
         if (data.user) {
           setUser(data.user);
         }
+
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch(() => {
+        localStorage.removeItem("discord_token");
+
+        setLoading(false);
+
+        navigate("/");
+      });
+  }, [navigate]);
 
   // LOGOUT
   const logout = () => {
@@ -37,6 +59,14 @@ export default function Dashboard() {
 
     navigate("/");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-white">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white flex">
@@ -66,19 +96,16 @@ export default function Dashboard() {
         <div className="mt-10 flex flex-col gap-3 px-3">
           <button className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/5 transition">
             <FaUser />
-
             {open && <span>Profile</span>}
           </button>
 
           <button className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/5 transition">
             <FaGift />
-
             {open && <span>Rewards</span>}
           </button>
 
           <button className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/5 transition">
             <FaCog />
-
             {open && <span>Settings</span>}
           </button>
         </div>
