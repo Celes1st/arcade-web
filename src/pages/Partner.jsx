@@ -15,14 +15,14 @@ export default function Partner() {
       {
         name: "Constellation",
         url: "https://discord.com/invite/Ne7MW7jcBX",
-        preview: "/public/videos/shorekeeper-crimson.mp4",
+        preview: "/public/videos/tanya.mp4",
         type: "video",
       },
 
       {
         name: "One For All",
         url: "https://discord.gg/rZ6YDya4M9",
-        preview: "/public/videos/reze-tears.mp4",
+        preview: "/public/videos/elaina.mp4",
         type: "video",
       },
 
@@ -36,14 +36,14 @@ export default function Partner() {
       {
         name: "Akatsuki",
         url: "https://discord.gg/",
-        preview: "/public/videos/shorekeeper-crimson.mp4",
+        preview: "/public/videos/tanya.mp4",
         type: "video",
       },
 
       {
         name: "Void Network",
         url: "https://discord.gg/",
-        preview: "/public/videos/reze-tears.mp4",
+        preview: "/public/videos/elaina.mp4",
         type: "video",
       },
 
@@ -57,7 +57,7 @@ export default function Partner() {
       {
         name: "Solaris",
         url: "https://discord.gg/",
-        preview: "/public/videos/shorekeeper-crimson.mp4",
+        preview: "/public/videos/tanya.mp4",
         type: "video",
       },
     ],
@@ -112,7 +112,10 @@ export default function Partner() {
       </section>
 
       {/* BOTTOM TEXT */}
-      <div className="partner-bottom">Hover To Explore</div>
+      <div className="partner-bottom">
+        ini example aja yh, maaf klo ada server klean
+      </div>
+      {/* <div className="partner-bottom">Hover To Explore</div> */}
     </div>
   );
 }

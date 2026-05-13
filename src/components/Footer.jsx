@@ -59,7 +59,7 @@ export default function Footer() {
 
               <button className="transition hover:text-white">Rei</button>
 
-              <button className="transition hover:text-white"></button>
+              <button className="transition hover:text-white">Library</button>
             </div>
           </div>
 
