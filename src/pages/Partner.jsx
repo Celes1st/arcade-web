@@ -8,56 +8,56 @@ export default function Partner() {
       {
         name: "Normies Legacy",
         url: "https://discord.gg/m5vhd6tPRJ",
-        preview: "/public/videos/silent-train.mp4",
+        preview: "/videos/silent-train.mp4",
         type: "video",
       },
 
       {
         name: "Constellation",
         url: "https://discord.com/invite/Ne7MW7jcBX",
-        preview: "/public/videos/tanya.mp4",
+        preview: "/videos/tanya.mp4",
         type: "video",
       },
 
       {
         name: "One For All",
         url: "https://discord.gg/rZ6YDya4M9",
-        preview: "/public/videos/elaina.mp4",
+        preview: "/videos/elaina.mp4",
         type: "video",
       },
 
       {
         name: "Nebula",
         url: "https://discord.gg/",
-        preview: "/public/videos/silent-train.mp4",
+        preview: "/videos/silent-train.mp4",
         type: "video",
       },
 
       {
         name: "Akatsuki",
         url: "https://discord.gg/",
-        preview: "/public/videos/tanya.mp4",
+        preview: "/videos/tanya.mp4",
         type: "video",
       },
 
       {
         name: "Void Network",
         url: "https://discord.gg/",
-        preview: "/public/videos/elaina.mp4",
+        preview: "/videos/elaina.mp4",
         type: "video",
       },
 
       {
         name: "Zenith",
         url: "https://discord.gg/",
-        preview: "/public/videos/silent-train.mp4",
+        preview: "/videos/silent-train.mp4",
         type: "video",
       },
 
       {
         name: "Solaris",
         url: "https://discord.gg/",
-        preview: "/public/videos/tanya.mp4",
+        preview: "/videos/tanya.mp4",
         type: "video",
       },
     ],
