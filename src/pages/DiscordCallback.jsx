@@ -1,5 +1,3 @@
-// src/pages/DiscordCallback.jsx
-
 import { useEffect } from "react";
 
 export default function DiscordCallback() {
@@ -13,6 +11,7 @@ export default function DiscordCallback() {
     // NO TOKEN
     if (!accessToken) {
       window.location.href = "/";
+
       return;
     }
 
@@ -55,8 +54,69 @@ export default function DiscordCallback() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center text-white">
-      Checking owner access...
+    <div className="min-h-screen bg-black text-white relative overflow-hidden flex items-center justify-center px-5">
+      {/* GLOW */}
+      <div
+        className="
+          absolute
+          w-[500px]
+          h-[500px]
+          bg-[#5865F2]/20
+          blur-[150px]
+          rounded-full
+        "
+      />
+
+      {/* CARD */}
+      <div
+        className="
+          relative z-10
+          w-full max-w-md
+          rounded-3xl
+          border border-white/10
+          bg-white/5
+          backdrop-blur-2xl
+          p-8 sm:p-10
+          text-center
+        "
+      >
+        {/* SPINNER */}
+        <div className="flex justify-center">
+          <div
+            className="
+              w-16 h-16
+              rounded-full
+              border-4
+              border-white/10
+              border-t-[#5865F2]
+              animate-spin
+            "
+          />
+        </div>
+
+        {/* TITLE */}
+        <h1 className="mt-8 text-3xl sm:text-4xl font-black">Authenticating</h1>
+
+        {/* DESC */}
+        <p className="mt-4 text-white/60 leading-relaxed text-sm sm:text-base">
+          Checking your Discord owner access and preparing your dashboard
+          session.
+        </p>
+
+        {/* STATUS */}
+        <div
+          className="
+            mt-8
+            rounded-2xl
+            border border-white/10
+            bg-black/30
+            px-5 py-4
+            text-sm text-white/50
+          "
+        >
+          Please wait a moment...
+        </div>
+      </div>
     </div>
   );
 }

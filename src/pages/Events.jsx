@@ -1,6 +1,9 @@
 import Navbar from "../components/Navbar";
+
 import Calendar from "react-calendar";
+
 import "react-calendar/dist/Calendar.css";
+
 import "../calendar.css";
 
 import { useState } from "react";
@@ -10,81 +13,214 @@ export default function Events() {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Navbar */}
+      {/* NAVBAR */}
       <Navbar />
 
-      {/* Glow */}
-      <div className="absolute top-[-250px] right-[10%] w-[700px] h-[700px] bg-[#b3ff00]/10 blur-[180px] rounded-full" />
+      {/* GLOW */}
+      <div
+        className="
+          absolute top-[-250px] right-[10%]
+          w-[700px] h-[700px]
+          bg-[#b3ff00]/10
+          blur-[180px]
+          rounded-full
+        "
+      />
 
-      {/* Hero */}
-      <section className="relative z-10 px-6 pt-44 pb-24">
+      {/* HERO */}
+      <section
+        className="
+          relative z-10
+          px-5 sm:px-8 lg:px-16
+          pt-36 sm:pt-40
+          pb-20 sm:pb-24
+        "
+      >
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <p className="inline-block text-[#b3ff00] font-medium uppercase text-[10px] tracking-[0.08em] px-3 py-1 rounded-full border border-[#b3ff00]/30 bg-[#b3ff00]/10 backdrop-blur-md">
+          {/* TAGS */}
+          <div className="flex flex-wrap items-center gap-3">
+            <p
+              className="
+                inline-block
+                text-[#b3ff00]
+                font-medium
+                uppercase
+                text-[10px]
+                tracking-[0.08em]
+                px-3 py-1
+                rounded-full
+                border border-[#b3ff00]/30
+                bg-[#b3ff00]/10
+                backdrop-blur-md
+              "
+            >
               COMMUNITY EVENTS
             </p>
 
-            <p className="inline-block text-white/70 font-medium uppercase text-[10px] tracking-[0.08em] px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+            <p
+              className="
+                inline-block
+                text-white/70
+                font-medium
+                uppercase
+                text-[10px]
+                tracking-[0.08em]
+                px-3 py-1
+                rounded-full
+                border border-white/10
+                bg-white/5
+                backdrop-blur-md
+              "
+            >
               BLOG & SCHEDULE
             </p>
           </div>
 
-          <h1 className="mt-8 text-6xl md:text-8xl font-black leading-tight">
+          {/* TITLE */}
+          <h1
+            className="
+              mt-8
+              text-5xl sm:text-6xl md:text-7xl lg:text-8xl
+              font-black
+              leading-tight
+            "
+          >
             Events &
             <br />
             <span className="text-[#b3ff00]">Community Logs</span>
           </h1>
 
-          <p className="mt-8 text-white/60 text-lg max-w-2xl leading-relaxed">
+          {/* DESC */}
+          <p
+            className="
+              mt-8
+              text-white/60
+              text-base sm:text-lg
+              max-w-2xl
+              leading-relaxed
+            "
+          >
             Stay updated with tournaments, watch parties, giveaways, and
             community activities.
           </p>
         </div>
       </section>
 
-      {/* Upcoming Event */}
-      <section className="relative z-10 px-6 pb-24">
-        <div className="max-w-7xl mx-auto rounded-[40px] border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
+      {/* UPCOMING EVENT */}
+      <section
+        className="
+          relative z-10
+          px-5 sm:px-8 lg:px-16
+          pb-20 sm:pb-24
+        "
+      >
+        <div
+          className="
+            max-w-7xl mx-auto
+            rounded-[32px]
+            border border-white/10
+            bg-white/5
+            backdrop-blur-xl
+            overflow-hidden
+          "
+        >
           <img
             src="banner-arcade.png"
             alt="event"
-            className="w-full h-[350px] object-cover opacity-80"
+            className="
+              w-full
+              h-[220px] sm:h-[300px] lg:h-[380px]
+              object-cover
+              opacity-80
+            "
           />
 
-          <div className="p-10">
-            <p className="text-[#b3ff00] text-sm uppercase tracking-[0.15em]">
+          <div className="p-6 sm:p-8 lg:p-10">
+            <p className="text-[#b3ff00] text-xs sm:text-sm uppercase tracking-[0.15em]">
               Upcoming Event
             </p>
 
-            <h2 className="mt-4 text-5xl font-black">Arcade Grand Opening</h2>
+            <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-black">
+              Arcade Grand Opening
+            </h2>
 
-            <p className="mt-6 text-white/60 max-w-3xl leading-relaxed">
+            <p
+              className="
+                mt-6
+                text-white/60
+                max-w-3xl
+                leading-relaxed
+                text-sm sm:text-base
+              "
+            >
               Gabung dan ikuti acara pembukaan server Arcade.
             </p>
 
-            <button className="mt-8 px-8 py-4 rounded-2xl bg-[#b3ff00] text-black font-semibold hover:scale-105 transition duration-300">
+            <button
+              className="
+                mt-8
+                w-full sm:w-auto
+                px-8 py-4
+                rounded-2xl
+                bg-[#b3ff00]
+                text-black
+                font-semibold
+                hover:scale-105
+                transition duration-300
+              "
+            >
               View Schedule
             </button>
           </div>
         </div>
       </section>
 
-      {/* Calendar + Live Schedule */}
-      <section className="relative z-10 px-6 pb-24">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
-          {/* Calendar */}
-          <div className="p-8 rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl">
-            <p className="text-[# ] uppercase text-sm tracking-[0.15em]">
+      {/* CALENDAR + SCHEDULE */}
+      <section
+        className="
+          relative z-10
+          px-5 sm:px-8 lg:px-16
+          pb-20 sm:pb-24
+        "
+      >
+        <div
+          className="
+            max-w-7xl mx-auto
+            grid grid-cols-1
+            xl:grid-cols-2
+            gap-8
+          "
+        >
+          {/* CALENDAR */}
+          <div
+            className="
+              p-6 sm:p-8
+              rounded-[32px]
+              border border-white/10
+              bg-white/5
+              backdrop-blur-xl
+              overflow-hidden
+            "
+          >
+            <p className="text-[#b3ff00] uppercase text-sm tracking-[0.15em]">
               Event Calendar
             </p>
 
-            <div className="mt-8">
+            <div className="mt-8 overflow-x-auto">
               <Calendar onChange={setDate} value={date} />
             </div>
           </div>
 
-          {/* Live Schedule */}
-          <div className="p-8 rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl">
+          {/* LIVE SCHEDULE */}
+          <div
+            className="
+              p-6 sm:p-8
+              rounded-[32px]
+              border border-white/10
+              bg-white/5
+              backdrop-blur-xl
+            "
+          >
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
 
@@ -93,48 +229,115 @@ export default function Events() {
               </p>
             </div>
 
-            <h2 className="mt-6 text-5xl font-black">Grand Opening</h2>
+            <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-black">
+              Grand Opening
+            </h2>
 
-            <p className="mt-6 text-white/60 leading-relaxed">
+            <p
+              className="
+                mt-6
+                text-white/60
+                leading-relaxed
+                text-sm sm:text-base
+              "
+            >
               Masih pengembangan sih, jadi event nya fek dulu
             </p>
 
-            {/* Countdown */}
-            <div className="flex gap-4 mt-10">
-              <div className="flex-1 p-6 rounded-2xl bg-black/30 border border-white/10 text-center">
-                <h3 className="text-4xl font-black text-[#b3ff00]">99</h3>
+            {/* COUNTDOWN */}
+            <div className="grid grid-cols-3 gap-4 mt-10">
+              <div
+                className="
+                  p-4 sm:p-6
+                  rounded-2xl
+                  bg-black/30
+                  border border-white/10
+                  text-center
+                "
+              >
+                <h3 className="text-3xl sm:text-4xl font-black text-[#b3ff00]">
+                  99
+                </h3>
 
-                <p className="text-white/40 mt-2">Days</p>
+                <p className="text-white/40 mt-2 text-xs sm:text-sm">Days</p>
               </div>
 
-              <div className="flex-1 p-6 rounded-2xl bg-black/30 border border-white/10 text-center">
-                <h3 className="text-4xl font-black text-[#b3ff00]">99</h3>
+              <div
+                className="
+                  p-4 sm:p-6
+                  rounded-2xl
+                  bg-black/30
+                  border border-white/10
+                  text-center
+                "
+              >
+                <h3 className="text-3xl sm:text-4xl font-black text-[#b3ff00]">
+                  99
+                </h3>
 
-                <p className="text-white/40 mt-2">Hours</p>
+                <p className="text-white/40 mt-2 text-xs sm:text-sm">Hours</p>
               </div>
 
-              <div className="flex-1 p-6 rounded-2xl bg-black/30 border border-white/10 text-center">
-                <h3 className="text-4xl font-black text-[#b3ff00]">99</h3>
+              <div
+                className="
+                  p-4 sm:p-6
+                  rounded-2xl
+                  bg-black/30
+                  border border-white/10
+                  text-center
+                "
+              >
+                <h3 className="text-3xl sm:text-4xl font-black text-[#b3ff00]">
+                  99
+                </h3>
 
-                <p className="text-white/40 mt-2">Minutes</p>
+                <p className="text-white/40 mt-2 text-xs sm:text-sm">Minutes</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Event Logs */}
-      <section className="relative z-10 px-6 pb-32">
+      {/* RECENT LOGS */}
+      <section
+        className="
+          relative z-10
+          px-5 sm:px-8 lg:px-16
+          pb-24 sm:pb-32
+        "
+      >
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-black mb-12">Recent Logs</h2>
+          <h2 className="text-4xl sm:text-5xl font-black mb-12">Recent Logs</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card */}
-            <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl hover:-translate-y-2 transition-all duration-300">
+          <div
+            className="
+              grid grid-cols-1
+              md:grid-cols-2
+              xl:grid-cols-3
+              gap-6
+            "
+          >
+            {/* CARD */}
+            <div
+              className="
+                rounded-3xl
+                overflow-hidden
+                border border-white/10
+                bg-white/5
+                backdrop-blur-xl
+                animate-[fadeUp_.5s_ease]
+                hover:-translate-y-2
+                transition-all duration-300
+              "
+            >
               <img
                 src="banner-arcade.png"
                 alt=""
-                className="w-full h-[220px] object-cover"
+                className="
+                  w-full
+                  h-[220px]
+                  object-cover
+                "
               />
 
               <div className="p-6">
@@ -149,12 +352,27 @@ export default function Events() {
               </div>
             </div>
 
-            {/* Card */}
-            <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl hover:-translate-y-2 transition-all duration-300">
+            {/* CARD */}
+            <div
+              className="
+                rounded-3xl
+                overflow-hidden
+                border border-white/10
+                bg-white/5
+                backdrop-blur-xl
+                animate-[fadeUp_.5s_ease]
+                hover:-translate-y-2
+                transition-all duration-300
+              "
+            >
               <img
                 src="banner-arcade.png"
                 alt=""
-                className="w-full h-[220px] object-cover"
+                className="
+                  w-full
+                  h-[220px]
+                  object-cover
+                "
               />
 
               <div className="p-6">
@@ -169,12 +387,27 @@ export default function Events() {
               </div>
             </div>
 
-            {/* Card */}
-            <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl hover:-translate-y-2 transition-all duration-300">
+            {/* CARD */}
+            <div
+              className="
+                rounded-3xl
+                overflow-hidden
+                border border-white/10
+                bg-white/5
+                backdrop-blur-xl
+                animate-[fadeUp_.5s_ease]
+                hover:-translate-y-2
+                transition-all duration-300
+              "
+            >
               <img
                 src="banner-arcade.png"
                 alt=""
-                className="w-full h-[220px] object-cover"
+                className="
+                  w-full
+                  h-[220px]
+                  object-cover
+                "
               />
 
               <div className="p-6">

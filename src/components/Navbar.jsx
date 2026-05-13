@@ -1,63 +1,44 @@
-// src/components/Navbar.jsx
-
-import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
-import { FaBars, FaTimes, FaDiscord, FaChevronDown } from "react-icons/fa";
+import { FaBars, FaTimes, FaDiscord } from "react-icons/fa";
 
-import ServerIcon from "../assets/ARCADE.png";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const [user, setUser] = useState(null);
 
-  const [loading, setLoading] = useState(true);
-
-  const [showWarning, setShowWarning] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   const [profileOpen, setProfileOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const profileRef = useRef(null);
-
-  // CLOSE PROFILE IF CLICK OUTSIDE
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setProfileOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   // DISCORD LOGIN
   const discordLogin = () => {
-    const clientId = "1465978664419065920";
+    const CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID;
 
-    const redirectUri = encodeURIComponent(
-      `${window.location.origin}/auth/discord/callback`,
-    );
+    const REDIRECT_URI = import.meta.env.VITE_DISCORD_REDIRECT_URI;
 
-    window.location.href =
-      `https://discord.com/oauth2/authorize` +
-      `?client_id=${clientId}` +
+    const DISCORD_URL =
+      `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}` +
       `&response_type=token` +
-      `&redirect_uri=${redirectUri}` +
-      `&scope=identify email`;
+      `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
+      `&scope=identify guilds guilds.members.read`;
+
+    window.location.href = DISCORD_URL;
   };
 
-  // CHECK LOGIN
+  // GET USER
   useEffect(() => {
     const token = localStorage.getItem("discord_token");
 
+    // NO TOKEN
     if (!token) {
-      setLoading(false);
-
+      setLoadingUser(false);
       return;
     }
 
@@ -78,159 +59,287 @@ export default function Navbar() {
           setUser(data.user);
         }
 
-        setLoading(false);
+        setLoadingUser(false);
       })
       .catch(() => {
         localStorage.removeItem("discord_token");
 
-        setLoading(false);
+        setLoadingUser(false);
       });
+  }, []);
+
+  // CLOSE PROFILE
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   // LOGOUT
   const logout = () => {
     localStorage.removeItem("discord_token");
 
+    navigate("/");
+
     window.location.reload();
   };
 
   return (
     <>
-      {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10 bg-black/45 backdrop-blur-2xl">
-        <div className="max-w-7xl mx-auto h-[68px] px-6 flex items-center justify-between">
-          {/* LEFT */}
-          <div className="flex items-center gap-12">
-            {/* LOGO */}
+      <nav
+        className="
+          fixed top-0 left-0 z-50 w-full
+          border-b border-white/10
+          bg-black/70
+          backdrop-blur-2xl
+        "
+      >
+        {/* TOP */}
+        <div
+          className="
+            mx-auto
+            flex h-20
+            max-w-7xl
+            items-center
+            justify-between
+            px-5 sm:px-8 lg:px-16
+          "
+        >
+          {/* LOGO */}
+          <Link
+            to="/"
+            className="
+              text-2xl sm:text-3xl
+              font-black
+              text-[#b3ff00]
+            "
+          >
+            Arcade
+          </Link>
+
+          {/* DESKTOP MENU */}
+          <div className="hidden lg:flex items-center gap-10">
             <Link
-              to="/"
-              className="text-3xl font-black tracking-tight text-white hover:text-[#b3ff00] transition"
+              to="/server-info"
+              className="text-white/70 hover:text-white transition"
             >
-              Arcade
+              Server Info
             </Link>
 
-            {/* DESKTOP NAV */}
-            <div className="hidden lg:flex items-center gap-8 text-[15px] text-white/75">
-              <Link
-                to="/server-info"
-                className="hover:text-[#b3ff00] transition"
-              >
-                Server Info
-              </Link>
+            <Link
+              to="/events"
+              className="text-white/70 hover:text-white transition"
+            >
+              Events
+            </Link>
 
-              <Link to="/events" className="hover:text-[#b3ff00] transition">
-                Events
-              </Link>
+            <Link
+              to="/partner"
+              className="text-white/70 hover:text-white transition"
+            >
+              Partner
+            </Link>
 
-              <Link to="/partner" className="hover:text-[#b3ff00] transition">
-                Partner
-              </Link>
+            <Link
+              to="/social-links"
+              className="text-white/70 hover:text-white transition"
+            >
+              Social Links
+            </Link>
 
-              <Link
-                to="/social-links"
-                className="hover:text-[#b3ff00] transition"
-              >
-                Social Links
-              </Link>
-
-              <Link to="/add-bot" className="hover:text-[#b3ff00] transition">
-                Add Bot
-              </Link>
-            </div>
+            <Link
+              to="/add-bot"
+              className="text-white/70 hover:text-white transition"
+            >
+              Add Bot
+            </Link>
           </div>
 
           {/* RIGHT */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* JOIN SERVER */}
-            <a
-              href="https://discord.gg/4KWauvZeSN"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2 rounded-full bg-[#b3ff00] text-black font-semibold hover:scale-105 transition"
-            >
-              Join Server
-            </a>
-
-            {/* USER */}
-            {loading ? null : user ? (
+          <div className="flex items-center gap-3">
+            {/* LOADING */}
+            {loadingUser ? (
+              <div
+                className="
+                  hidden sm:block
+                  h-11 w-32
+                  rounded-2xl
+                  border border-white/10
+                  bg-white/5
+                  animate-pulse
+                "
+              />
+            ) : user ? (
+              /* PROFILE */
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-3 px-3 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition"
+                  className="
+                    flex items-center gap-3
+                    rounded-2xl
+                    border border-white/10
+                    bg-white/5
+                    px-3 py-2
+                    hover:bg-white/10
+                    transition
+                  "
                 >
                   <img
                     src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
                     alt="avatar"
-                    className="w-9 h-9 rounded-full border border-white/10"
+                    className="
+                      h-10 w-10
+                      rounded-full
+                      border border-white/10
+                    "
                   />
 
-                  <span className="text-sm font-semibold">{user.username}</span>
+                  <div className="hidden sm:block text-left">
+                    <p className="text-sm font-semibold">{user.username}</p>
 
-                  <FaChevronDown
-                    className={`text-xs transition duration-300 ${
-                      profileOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                    <p className="text-xs text-[#b3ff00]">Owner</p>
+                  </div>
                 </button>
 
                 {/* DROPDOWN */}
                 {profileOpen && (
-                  <div className="absolute right-0 top-16 w-72 rounded-3xl border border-white/10 bg-[#111111]/95 backdrop-blur-2xl p-3 shadow-[0_20px_80px_rgba(0,0,0,0.6)] animate-in fade-in slide-in-from-top-2 duration-200">
-                    {/* USER INFO */}
-                    <div className="flex items-center gap-4 p-3 rounded-2xl">
+                  <div
+                    className="
+                      absolute right-0 top-16
+                      w-64
+                      rounded-3xl
+                      border border-white/10
+                      bg-[#111111]/95
+                      backdrop-blur-2xl
+                      p-4
+                      shadow-2xl
+                    "
+                  >
+                    <div
+                      className="
+                        flex items-center gap-3
+                        border-b border-white/10
+                        pb-4
+                      "
+                    >
                       <img
                         src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
                         alt="avatar"
-                        className="w-14 h-14 rounded-full border border-white/10"
+                        className="
+                          h-14 w-14
+                          rounded-full
+                          border border-white/10
+                        "
                       />
 
                       <div>
-                        <p className="font-bold text-lg">{user.username}</p>
+                        <p className="font-semibold">{user.username}</p>
 
-                        <p className="text-sm text-white/50">Logged in</p>
+                        <p className="text-xs text-[#b3ff00]">Owner Access</p>
                       </div>
                     </div>
 
-                    {/* MENU */}
-                    <div className="mt-3 flex flex-col gap-2">
+                    {window.location.pathname !== "/dashboard" ? (
                       <button
-                        onClick={() => (window.location.href = "/dashboard")}
-                        className="w-full text-left px-4 py-3 rounded-2xl bg-white/5 hover:bg-white/10 transition"
+                        onClick={() => {
+                          navigate("/dashboard");
+                          setProfileOpen(false);
+                        }}
+                        className="
+                          mt-4 w-full text-left
+                          rounded-2xl
+                          px-4 py-3
+                          hover:bg-white/5
+                          transition text-sm
+                        "
                       >
                         Dashboard
                       </button>
-
+                    ) : (
                       <button
-                        onClick={logout}
-                        className="w-full text-left px-4 py-3 rounded-2xl bg-red-500/10 hover:bg-red-500/20 text-red-400 transition"
+                        onClick={() => {
+                          navigate("/");
+                          setProfileOpen(false);
+                        }}
+                        className="
+                          mt-4 w-full text-left
+                          rounded-2xl
+                          px-4 py-3
+                          hover:bg-white/5
+                          transition text-sm
+                        "
                       >
-                        Logout
+                        Home
                       </button>
-                    </div>
+                    )}
+
+                    <button
+                      onClick={logout}
+                      className="
+                        mt-2 w-full text-left
+                        rounded-2xl
+                        bg-red-500/10
+                        px-4 py-3
+                        text-red-400
+                        hover:bg-red-500/20
+                        transition text-sm
+                      "
+                    >
+                      Logout
+                    </button>
                   </div>
                 )}
               </div>
             ) : (
+              /* LOGIN */
               <button
-                onClick={() => setShowWarning(true)}
-                className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#5865F2] text-white font-semibold hover:scale-105 transition"
+                onClick={discordLogin}
+                className="
+                  hidden sm:flex
+                  items-center gap-2
+                  rounded-full
+                  bg-[#5865F2]
+                  px-5 py-2
+                  font-semibold
+                  hover:scale-105
+                  transition
+                "
               >
                 <FaDiscord />
                 Login
               </button>
             )}
-          </div>
 
-          {/* MOBILE BUTTON */}
-          <button onClick={() => setOpen(!open)} className="lg:hidden text-2xl">
-            {open ? <FaTimes /> : <FaBars />}
-          </button>
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="text-2xl lg:hidden"
+            >
+              {open ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
         </div>
 
         {/* MOBILE MENU */}
         {open && (
-          <div className="lg:hidden border-t border-white/10 bg-black/95 backdrop-blur-2xl">
-            <div className="px-6 py-6 flex flex-col gap-5">
+          <div
+            className="
+              lg:hidden
+              border-t border-white/10
+              bg-black/95
+              px-5 py-5
+              animate-[menuShow_.25s_ease]
+            "
+          >
+            <div className="flex flex-col gap-5 text-sm">
               <Link to="/server-info" onClick={() => setOpen(false)}>
                 Server Info
               </Link>
@@ -255,85 +364,66 @@ export default function Navbar() {
                 href="https://discord.gg/4KWauvZeSN"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 px-5 py-3 rounded-full bg-[#b3ff00] text-black text-center font-semibold"
+                className="
+                  rounded-2xl
+                  bg-[#b3ff00]
+                  px-5 py-3
+                  text-center
+                  font-semibold
+                  text-black
+                "
               >
                 Join Server
               </a>
 
-              {user && (
+              {user ? (
                 <button
-                  onClick={() => (window.location.href = "/dashboard")}
-                  className="px-5 py-3 rounded-full bg-white/10 text-white text-center font-semibold"
+                  onClick={() => {
+                    navigate("/dashboard");
+                    setOpen(false);
+                  }}
+                  className="
+                    rounded-2xl
+                    bg-white/5
+                    px-5 py-3
+                    text-left
+                  "
                 >
                   Dashboard
                 </button>
-              )}
+              ) : null}
 
-              {!loading && !user && (
+              {!user && !loadingUser ? (
                 <button
-                  onClick={() => setShowWarning(true)}
-                  className="flex justify-center items-center gap-2 px-5 py-3 rounded-full bg-[#5865F2] text-white font-semibold"
+                  onClick={discordLogin}
+                  className="
+                    rounded-2xl
+                    bg-[#5865F2]
+                    px-5 py-3
+                    font-semibold
+                  "
                 >
-                  <FaDiscord />
                   Login with Discord
+                </button>
+              ) : null}
+
+              {user && (
+                <button
+                  onClick={logout}
+                  className="
+                    rounded-2xl
+                    bg-red-500/10
+                    px-5 py-3
+                    text-red-400
+                  "
+                >
+                  Logout
                 </button>
               )}
             </div>
           </div>
         )}
       </nav>
-
-      {/* MODAL */}
-      {showWarning && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
-          <div className="w-[90%] max-w-md rounded-3xl border border-white/10 bg-[#0f0f0f] p-8 text-center shadow-2xl">
-            {/* ICON */}
-            <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-[#b3ff00] shadow-[0_0_30px_rgba(179,255,0,1)]">
-              <img
-                src={ServerIcon}
-                alt="Arcade"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <h2 className="mt-6 text-2xl font-bold">Join Our Discord First</h2>
-
-            <p className="mt-3 text-white/60 text-sm leading-relaxed">
-              You must join the Arcade Discord server before logging in and
-              accessing member-only features.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3">
-              <a
-                href="https://discord.gg/4KWauvZeSN"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full px-5 py-3 rounded-2xl bg-[#b3ff00] text-black font-bold hover:scale-[1.02] transition"
-              >
-                Join Discord Server
-              </a>
-
-              <button
-                onClick={() => {
-                  setShowWarning(false);
-
-                  discordLogin();
-                }}
-                className="w-full px-5 py-3 rounded-2xl bg-[#5865F2] text-white font-semibold hover:scale-[1.02] transition"
-              >
-                Continue Login
-              </button>
-
-              <button
-                onClick={() => setShowWarning(false)}
-                className="text-sm text-white/40 hover:text-white/70 transition"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

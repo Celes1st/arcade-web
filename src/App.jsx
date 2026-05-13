@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -16,28 +14,20 @@ import AddBot from "./pages/AddBot";
 function AppContent() {
   const location = useLocation();
 
-  // HIDE NAVBAR ON DASHBOARD
   const hideNavbar = location.pathname === "/dashboard";
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {!hideNavbar && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/events" element={<Events />} />
-
         <Route path="/server-info" element={<ServerInfo />} />
-
         <Route path="/dashboard" element={<Dashboard />} />
-
         <Route path="/auth/discord/callback" element={<DiscordCallback />} />
-
         <Route path="/partner" element={<Partner />} />
-
         <Route path="/social-links" element={<SocialLinks />} />
-
         <Route path="/add-bot" element={<AddBot />} />
       </Routes>
     </div>

@@ -3,16 +3,31 @@ import Navbar from "../components/Navbar";
 export default function SocialLinks() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Navbar */}
+      {/* NAVBAR */}
       <Navbar />
 
-      {/* Glow */}
-      <div className="absolute top-[-250px] left-[10%] w-[700px] h-[700px] bg-[#b3ff00]/10 blur-[180px] rounded-full" />
+      {/* GLOW */}
+      <div
+        className="
+          absolute top-[-250px] left-[10%]
+          w-[700px] h-[700px]
+          bg-[#b3ff00]/10
+          blur-[180px]
+          rounded-full
+        "
+      />
 
-      {/* Hero */}
-      <section className="relative z-10 px-6 pt-44 pb-24">
+      {/* HERO */}
+      <section
+        className="
+          relative z-10
+          px-5 sm:px-8 lg:px-16
+          pt-36 sm:pt-40
+          pb-20 sm:pb-24
+        "
+      >
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <p className="inline-block text-[#b3ff00] font-medium uppercase text-[10px] tracking-[0.08em] px-3 py-1 rounded-full border border-[#b3ff00]/30 bg-[#b3ff00]/10 backdrop-blur-md">
               SOCIAL HUB
             </p>
@@ -22,105 +37,64 @@ export default function SocialLinks() {
             </p>
           </div>
 
-          <h1 className="mt-8 text-6xl md:text-8xl font-black leading-tight">
+          <h1 className="mt-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-tight">
             Our
             <br />
             <span className="text-[#b3ff00]">Social Platforms</span>
           </h1>
 
-          <p className="mt-8 text-white/60 text-lg max-w-2xl leading-relaxed">
+          <p className="mt-8 text-white/60 text-base sm:text-lg max-w-2xl leading-relaxed">
             Follow our community across different platforms and stay connected
             everywhere.
           </p>
         </div>
       </section>
 
-      {/* Social Cards */}
-      <section className="relative z-10 px-6 pb-32">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Discord */}
-          <a
-            href="https://discord.com/invite/4KWauvZeSN"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-[#5865F2]/40 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">Discord</h2>
+      {/* SOCIAL CARDS */}
+      <section className="relative z-10 px-5 sm:px-8 lg:px-16 pb-24 sm:pb-32">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {[
+            ["Discord", "#5865F2"],
+            ["Instagram", "#ec4899"],
+            ["TikTok", "#22d3ee"],
+            ["YouTube", "#ef4444"],
+            ["Spotify", "#22c55e"],
+            ["GitHub", "#ffffff"],
+          ].map(([name, color]) => (
+            <a
+              key={name}
+              href="https://google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                group
+                rounded-3xl
+                border border-white/10
+                bg-white/5
+                p-6 sm:p-8 lg:p-10
+                backdrop-blur-xl
+                animate-[fadeUp_.5s_ease]
+                hover:-translate-y-2
+                transition-all duration-300
+              "
+              style={{
+                borderColor: "rgba(255,255,255,0.08)",
+              }}
+            >
+              <h2 className="text-3xl sm:text-4xl font-black">{name}</h2>
 
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Join our active community server and chat with members.
-            </p>
-          </a>
+              <p className="mt-4 text-white/60 leading-relaxed">
+                Connect with our {name} community and stay updated.
+              </p>
 
-          {/* Instagram */}
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-pink-500/40 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">Instagram</h2>
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Photos, highlights, stories, and updates.
-            </p>
-          </a>
-
-          {/* TikTok */}
-          <a
-            href="https://tiktok.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-cyan-400/40 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">TikTok</h2>
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Funny clips, edits, and community moments.
-            </p>
-          </a>
-
-          {/* YouTube */}
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-red-500/40 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">YouTube</h2>
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Event recaps, edits, and community content.
-            </p>
-          </a>
-
-          {/* Spotify */}
-          <a
-            href="https://spotify.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-green-500/40 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">Spotify</h2>
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Listen to community playlists and music sessions.
-            </p>
-          </a>
-
-          {/* GitHub */}
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group p-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl hover:border-white/30 hover:-translate-y-2 transition-all duration-300"
-          >
-            <h2 className="text-4xl font-black">GitHub</h2>
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              Open source projects, bots, and development stuff.
-            </p>
-          </a>
+              <div
+                className="mt-8 h-1 rounded-full"
+                style={{
+                  background: color,
+                }}
+              />
+            </a>
+          ))}
         </div>
       </section>
     </div>
