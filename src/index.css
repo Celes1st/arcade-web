@@ -126,13 +126,27 @@ video {
 
   object-fit: cover;
 
-  transform: scale(1.04);
+  filter: brightness(0.82) contrast(1.06) saturate(1.15);
 
-  animation:
-    previewFade 0.7s ease,
-    bgFloat 16s ease-in-out infinite alternate;
+  transform: scale(1.03);
 
-  filter: brightness(0.95) contrast(1.08) saturate(1.15);
+  transition:
+    opacity 0.45s ease,
+    transform 0.8s ease;
+
+  animation: partnerVideoFade 0.45s ease;
+}
+
+@keyframes partnerVideoFade {
+  from {
+    opacity: 0.25;
+    transform: scale(1.06);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.03);
+  }
 }
 
 @keyframes previewFade {
@@ -279,7 +293,7 @@ video {
 
   font-size: 0.28em;
 
-  color: #b3ff00;
+  color: #ffffff;
 
   text-shadow: 0 0 12px rgba(179, 255, 0, 0.55);
 }
@@ -296,7 +310,7 @@ video {
 
   font-size: 0.28em;
 
-  color: #b3ff00;
+  color: #ffffff;
 
   text-shadow: 0 0 12px rgba(179, 255, 0, 0.55);
 }
@@ -445,5 +459,85 @@ video {
     margin-right: 50px;
 
     font-size: clamp(90px, 24vw, 180px);
+  }
+
+  .partner-preview {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+  }
+
+  /* THUMB */
+
+  .partner-video-thumb {
+    position: absolute;
+    inset: 0;
+
+    background-size: cover;
+    background-position: center;
+
+    filter: brightness(0.8) saturate(1.15);
+
+    transform: scale(1.04);
+
+    transition:
+      opacity 0.4s ease,
+      transform 1s ease;
+
+    opacity: 1;
+
+    z-index: 1;
+  }
+
+  .partner-video-thumb.hide-thumb {
+    opacity: 0;
+  }
+
+  /* VIDEO */
+
+  .partner-preview-media {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    filter: brightness(0.88) contrast(1.05) saturate(1.1);
+
+    transform: scale(1.03);
+
+    transition:
+      opacity 0.45s ease,
+      transform 0.8s ease;
+
+    z-index: 2;
+  }
+
+  .video-hidden {
+    opacity: 0;
+  }
+
+  .video-visible {
+    opacity: 1;
+  }
+
+  /* EXTRA CINEMATIC */
+
+  .partner-preview-media,
+  .partner-video-thumb {
+    animation: cinematicZoom 12s linear infinite alternate;
+  }
+
+  @keyframes cinematicZoom {
+    from {
+      transform: scale(1.03);
+    }
+
+    to {
+      transform: scale(1.08);
+    }
   }
 }

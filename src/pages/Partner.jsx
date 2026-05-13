@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Navbar from "../components/Navbar";
 
@@ -9,56 +9,48 @@ export default function Partner() {
         name: "Normies Legacy",
         url: "https://discord.gg/m5vhd6tPRJ",
         preview: "/videos/silent-train.mp4",
-        type: "video",
       },
 
       {
         name: "Constellation",
         url: "https://discord.com/invite/Ne7MW7jcBX",
         preview: "/videos/tanya.mp4",
-        type: "video",
       },
 
       {
         name: "One For All",
         url: "https://discord.gg/rZ6YDya4M9",
         preview: "/videos/elaina.mp4",
-        type: "video",
       },
 
       {
         name: "Nebula",
         url: "https://discord.gg/",
         preview: "/videos/silent-train.mp4",
-        type: "video",
       },
 
       {
         name: "Akatsuki",
         url: "https://discord.gg/",
         preview: "/videos/tanya.mp4",
-        type: "video",
       },
 
       {
         name: "Void Network",
         url: "https://discord.gg/",
         preview: "/videos/elaina.mp4",
-        type: "video",
       },
 
       {
         name: "Zenith",
         url: "https://discord.gg/",
         preview: "/videos/silent-train.mp4",
-        type: "video",
       },
 
       {
         name: "Solaris",
         url: "https://discord.gg/",
         preview: "/videos/tanya.mp4",
-        type: "video",
       },
     ],
     [],
@@ -66,14 +58,48 @@ export default function Partner() {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const [videoReady, setVideoReady] = useState(false);
+
   const activePartner = partners[activeIndex];
+
+  /* PRELOAD */
+  useEffect(() => {
+    partners.forEach((partner) => {
+      const video = document.createElement("video");
+
+      video.src = partner.preview;
+
+      video.preload = "auto";
+    });
+  }, [partners]);
+
+  /* RESET READY */
+  useEffect(() => {
+    setVideoReady(false);
+  }, [activeIndex]);
 
   return (
     <div className="partner-page">
       <Navbar />
 
-      {/* VIDEO BG */}
+      {/* BG */}
       <div className="partner-preview">
+        {/* THUMB / FAKE BG */}
+        <div
+          className={`partner-video-thumb ${videoReady ? "hide-thumb" : ""}`}
+          style={{
+            backgroundImage: `
+              linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.25),
+                rgba(0,0,0,0.45)
+              ),
+              url("https://picsum.photos/1920/1080?random=${activeIndex}")
+            `,
+          }}
+        />
+
+        {/* REAL VIDEO */}
         <video
           key={activePartner.preview}
           src={activePartner.preview}
@@ -81,11 +107,15 @@ export default function Partner() {
           muted
           loop
           playsInline
-          className="partner-preview-media"
+          preload="auto"
+          onCanPlay={() => setVideoReady(true)}
+          className={`partner-preview-media ${
+            videoReady ? "video-visible" : "video-hidden"
+          }`}
         />
       </div>
 
-      {/* DARK OVERLAY */}
+      {/* OVERLAY */}
       <div className="partner-overlay" />
 
       {/* GLOW */}
@@ -111,9 +141,9 @@ export default function Partner() {
         </div>
       </section>
 
-      {/* BOTTOM TEXT */}
+      {/* BOTTOM */}
       <div className="partner-bottom">
-        ini example aja yh, maaf klo ada server klean
+        contoh ajalah, maap klo ada server klean
       </div>
       {/* <div className="partner-bottom">Hover To Explore</div> */}
     </div>
