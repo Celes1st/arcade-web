@@ -15,41 +15,37 @@ app.use(cors());
 ========================= */
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [GatewayIntentBits.Guilds],
 });
 
 client.once("ready", () => {
-  console.log(`Logged in as ${client.user.tag}`);
+  console.log(`✅ Logged in as ${client.user.tag}`);
 });
 
 client.login(process.env.BOT_TOKEN);
 
 /* =========================
-   API
+   ROOT
 ========================= */
 
 app.get("/", (req, res) => {
   res.send("Arcade API Running");
 });
 
-/* LIVE SERVER STATS */
+/* =========================
+   SERVER STATS API
+========================= */
 
 app.get("/api/server-stats", async (req, res) => {
   try {
     const guild = await client.guilds.fetch(process.env.GUILD_ID);
 
-    await guild.members.fetch();
-
     res.json({
       success: true,
 
-      members: guild.memberCount,
-
-      channels: guild.channels.cache.size,
-
-      roles: guild.roles.cache.size,
-
       serverName: guild.name,
+
+      members: guild.memberCount,
 
       icon: guild.iconURL({
         size: 512,
@@ -60,7 +56,7 @@ app.get("/api/server-stats", async (req, res) => {
 
     res.status(500).json({
       success: false,
-      error: "Failed to fetch server stats",
+      error: err.message,
     });
   }
 });
@@ -72,5 +68,5 @@ app.get("/api/server-stats", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`API running on port ${PORT}`);
+  console.log(`🚀 API running on port ${PORT}`);
 });
