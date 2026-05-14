@@ -6,9 +6,6 @@ import { Client, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
 
-console.log("TOKEN:", process.env.BOT_TOKEN);
-console.log("GUILD:", process.env.GUILD_ID);
-
 const app = express();
 
 app.use(cors());
