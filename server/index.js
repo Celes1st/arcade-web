@@ -1,49 +1,41 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
 import { Client, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
-
-console.log("TOKEN:", process.env.BOT_TOKEN);
-console.log("GUILD:", process.env.GUILD_ID);
 
 const app = express();
 
 app.use(cors());
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences,
+  ],
 });
 
 let isReady = false;
 
 /* =========================
-   LOGIN BOT
+   BOT READY
 ========================= */
 
-async function startBot() {
-  try {
-    console.log("START LOGIN...");
-
-    await client.login(process.env.BOT_TOKEN);
-
-    console.log("✅ LOGIN SUCCESS");
-  } catch (err) {
-    console.error("❌ LOGIN FAILED");
-    console.error(err);
-  }
-}
-
-client.once("ready", () => {
+client.once("ready", async () => {
   console.log(`✅ READY AS ${client.user.tag}`);
 
   isReady = true;
-});
 
-client.on("error", (err) => {
-  console.error(err);
+  try {
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
+
+    console.log(`✅ CONNECTED TO: ${guild.name}`);
+  } catch (err) {
+    console.error("❌ GUILD FETCH ERROR");
+    console.error(err);
+  }
 });
 
 /* =========================
@@ -63,19 +55,21 @@ app.get("/api/server-stats", async (req, res) => {
       });
     }
 
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
 
-    if (!guild) {
-      return res.status(404).json({
-        success: false,
-        error: "Guild not found",
-      });
-    }
+    await guild.members.fetch();
+
+    const onlineMembers = guild.members.cache.filter(
+      (m) => m.presence?.status === "online"
+    ).size;
 
     res.json({
       success: true,
       serverName: guild.name,
       members: guild.memberCount,
+      online: onlineMembers,
+      channels: guild.channels.cache.size,
+      roles: guild.roles.cache.size,
       icon: guild.iconURL(),
     });
   } catch (err) {
@@ -98,4 +92,8 @@ app.listen(PORT, () => {
   console.log(`🚀 API running on port ${PORT}`);
 });
 
-startBot();
+/* =========================
+   LOGIN BOT
+========================= */
+
+client.login(process.env.BOT_TOKEN);
