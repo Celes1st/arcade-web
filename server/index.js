@@ -6,13 +6,12 @@ import { Client, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
 
+console.log("TOKEN:", process.env.BOT_TOKEN);
+console.log("GUILD:", process.env.GUILD_ID);
+
 const app = express();
 
 app.use(cors());
-
-/* =========================
-   DISCORD CLIENT
-========================= */
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
@@ -22,19 +21,13 @@ client.once("ready", () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
 });
 
-client.login(process.env.BOT_TOKEN);
-
-/* =========================
-   ROOT
-========================= */
-
-app.get("/", (req, res) => {
-  res.send("Arcade API Running");
+client.login(process.env.BOT_TOKEN).catch((err) => {
+  console.error("LOGIN ERROR:", err);
 });
 
-/* =========================
-   SERVER STATS API
-========================= */
+app.get("/", (req, res) => {
+  res.send("API Running");
+});
 
 app.get("/api/server-stats", async (req, res) => {
   try {
@@ -42,14 +35,8 @@ app.get("/api/server-stats", async (req, res) => {
 
     res.json({
       success: true,
-
       serverName: guild.name,
-
       members: guild.memberCount,
-
-      icon: guild.iconURL({
-        size: 512,
-      }),
     });
   } catch (err) {
     console.error(err);
@@ -60,10 +47,6 @@ app.get("/api/server-stats", async (req, res) => {
     });
   }
 });
-
-/* =========================
-   START SERVER
-========================= */
 
 const PORT = process.env.PORT || 3000;
 
