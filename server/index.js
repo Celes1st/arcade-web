@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import axios from "axios";
-import process from "process";
+
+import { Client, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
 
@@ -10,82 +10,67 @@ const app = express();
 
 app.use(cors());
 
-app.get("/api/check-member", async (req, res) => {
+/* =========================
+   DISCORD CLIENT
+========================= */
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+});
+
+client.once("ready", () => {
+  console.log(`Logged in as ${client.user.tag}`);
+});
+
+client.login(process.env.BOT_TOKEN);
+
+/* =========================
+   API
+========================= */
+
+app.get("/", (req, res) => {
+  res.send("Arcade API Running");
+});
+
+/* LIVE SERVER STATS */
+
+app.get("/api/server-stats", async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
+    const guild = await client.guilds.fetch(process.env.GUILD_ID);
 
-    if (!authHeader) {
-      return res.status(401).json({
-        success: false,
-        error: "No token",
-      });
-    }
+    await guild.members.fetch();
 
-    const token = authHeader.split(" ")[1];
-
-    // GET USER
-    const userRes = await axios.get("https://discord.com/api/users/@me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const user = userRes.data;
-
-    // GET MEMBER
-    const memberRes = await axios.get(
-      `https://discord.com/api/guilds/${process.env.GUILD_ID}/members/${user.id}`,
-      {
-        headers: {
-          Authorization: `Bot ${process.env.BOT_TOKEN}`,
-        },
-      },
-    );
-
-    const member = memberRes.data;
-
-    // DEBUG
-    console.log("========== DEBUG ==========");
-    console.log("USERNAME:", user.username);
-    console.log("USER ID:", user.id);
-    console.log("ROLES:", member.roles);
-    console.log("OWNER ROLE ENV:", process.env.OWNER_ROLE_ID);
-    console.log("===========================");
-
-    // FORCE STRING CHECK
-    const ownerRoleId = String(process.env.OWNER_ROLE_ID);
-
-    const isOwner = member.roles.some((role) => String(role) === ownerRoleId);
-
-    console.log("IS OWNER:", isOwner);
-
-    // BLOCK
-    if (!isOwner) {
-      console.log("BLOCKED");
-
-      return res.status(403).json({
-        success: false,
-        error: "Owner only",
-      });
-    }
-
-    console.log("ALLOWED");
-
-    return res.json({
+    res.json({
       success: true,
-      user,
+
+      members: guild.memberCount,
+
+      channels: guild.channels.cache.size,
+
+      roles: guild.roles.cache.size,
+
+      serverName: guild.name,
+
+      icon: guild.iconURL({
+        size: 512,
+      }),
     });
   } catch (err) {
-    console.log("ERROR:");
-    console.error(err.response?.data || err.message);
+    console.error(err);
 
-    return res.status(403).json({
+    res.status(500).json({
       success: false,
-      error: "Unauthorized",
+      error: "Failed to fetch server stats",
     });
   }
 });
 
-app.listen(3001, () => {
-  console.log("API running");
+/* =========================
+   START SERVER
+========================= */
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`API running on port ${PORT}`);
 });
