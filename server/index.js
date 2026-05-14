@@ -6,6 +6,9 @@ import { Client, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
 
+console.log("TOKEN:", process.env.BOT_TOKEN);
+console.log("GUILD:", process.env.GUILD_ID);
+
 const app = express();
 
 app.use(cors());
@@ -17,36 +20,34 @@ const client = new Client({
 let isReady = false;
 
 /* =========================
-   DISCORD LOGIN
+   LOGIN BOT
 ========================= */
 
-client
-  .login(process.env.BOT_TOKEN)
-  .then(() => {
-    console.log("✅ LOGIN SUCCESS");
-  })
-  .catch((err) => {
-    console.error("❌ LOGIN ERROR");
-    console.error(err);
-  });
+async function startBot() {
+  try {
+    console.log("START LOGIN...");
 
-client.on("ready", () => {
+    await client.login(process.env.BOT_TOKEN);
+
+    console.log("✅ LOGIN SUCCESS");
+  } catch (err) {
+    console.error("❌ LOGIN FAILED");
+    console.error(err);
+  }
+}
+
+client.once("ready", () => {
   console.log(`✅ READY AS ${client.user.tag}`);
 
   isReady = true;
 });
 
 client.on("error", (err) => {
-  console.error("❌ CLIENT ERROR");
   console.error(err);
 });
 
-client.on("warn", (msg) => {
-  console.log("⚠️ WARN:", msg);
-});
-
 /* =========================
-   ROUTES
+   API
 ========================= */
 
 app.get("/", (req, res) => {
@@ -73,14 +74,9 @@ app.get("/api/server-stats", async (req, res) => {
 
     res.json({
       success: true,
-
       serverName: guild.name,
-
       members: guild.memberCount,
-
-      icon: guild.iconURL({
-        size: 512,
-      }),
+      icon: guild.iconURL(),
     });
   } catch (err) {
     console.error(err);
@@ -101,3 +97,5 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 API running on port ${PORT}`);
 });
+
+startBot();
